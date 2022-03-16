@@ -3,6 +3,8 @@ import App from './App.vue'
 import { createPinia } from 'pinia'
 import axios from 'axios'
 
+import './app.css'
+
 axios.defaults.withCredentials = true
 axios.defaults.baseURL = 'http://localhost:8000/'
 
