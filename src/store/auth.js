@@ -27,7 +27,7 @@ export const useAuth = defineStore('auth-store', () => {
 			getUser();
 		} catch (err) {
 			authenticated.value = false;
-			user.value = {};
+			user.value = null;
 			console.error('Error loading new arrivals:', err);
 			return err;
 		}
