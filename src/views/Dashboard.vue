@@ -68,7 +68,7 @@
 									>
 										<MenuItem>
 											<a
-												@click=""
+												@click="logout"
 												href="#"
 												class="block px-4 py-2 text-sm text-gray-700"
 												>Logout</a
@@ -160,6 +160,8 @@ import {
 	MenuItems,
 } from '@headlessui/vue';
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/vue/outline';
+import { useRouter } from 'vue-router';
+import { useAuth } from '../store/auth';
 
 const user = {
 	name: 'Tom Cook',
@@ -186,9 +188,21 @@ export default {
 		XIcon,
 	},
 	setup() {
+		
+		const router = useRouter();
+		const auth = useAuth();
+
+		const logout = async () => {
+			await auth.logout()
+			router.replace({
+				name: 'Login'
+			})
+		}
+		
 		return {
 			user,
 			navigation,
+			logout,
 		};
 	},
 };
