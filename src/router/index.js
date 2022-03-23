@@ -5,6 +5,7 @@ import Main from '../components/Main.vue'
 import Survey from '../components/Survey.vue'
 
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuth } from '../store/auth';
 
 const routes = [
 	{
@@ -14,7 +15,17 @@ const routes = [
 		children: [
 			{ path: '/dashboard', name: 'Dashboard', component: Main },
 			{ path: '/survey', name: 'Survey', component: Survey }
-		]
+		],
+		async beforeEnter (to, from, next) {
+			const auth = useAuth();
+			await auth.getUser()
+			if (auth.user) {
+				next()
+			}
+			next({
+				name: 'Login'
+			})
+		}
 	},
 	{
 		path: '/login',
