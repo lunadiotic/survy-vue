@@ -39,7 +39,10 @@ export const useSurvey = defineStore('survey-store', () => {
 		},
 	]);
 
+	const questionTypes = ['text', 'select', 'radio', 'checkbox', 'textarea'];
+
 	return {
 		surveys,
+		questionTypes,
 	};
 });

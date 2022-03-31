@@ -17,9 +17,9 @@
               </label>
               <div class="mt-1 flex items-center">
                 <img
-                  v-if="survey.image"
-                  :src="survey.image"
-                  :alt="survey.title"
+                  v-if="model.image"
+                  :src="model.image"
+                  :alt="model.title"
                   class="w-64 h-48 object-cover"
                 />
                 <span
@@ -58,7 +58,7 @@
               <input
                 type="text"
                 name="title"
-                v-model="survey.title"
+                v-model="model.title"
                 id="title"
                 class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
               />
@@ -72,9 +72,9 @@
                 <textarea
                   name="description"
                   id="description"
-                  v-model="survey.description"
+                  v-model="model.description"
                   rows="3"
-                  class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  class="focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 >
                 </textarea>
               </div>
@@ -87,7 +87,7 @@
               <input
                 type="date"
                 name="expired_at"
-                v-model="survey.expired_at"
+                v-model="model.expired_at"
                 id="expired_at"
                 class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
               />
@@ -98,7 +98,7 @@
                 <input
                   type="checkbox"
                   name="status"
-                  v-model="survey.status"
+                  v-model="model.status"
                   class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
                 />
               </div>
@@ -121,6 +121,7 @@
             <h3 class="text-2xl font-semibold flex items-center justify-between">
               Questions
               <button
+                @click="addQuestion()"
                 class="flex items-center text-sm py-1 px-4 rounded-sm text-white bg-gray-600 hover:bg-gray-700"
               >
                 <svg
@@ -140,10 +141,10 @@
                 Add Question
               </button>
             </h3>
-            <div v-if="!survey.questions.length" class="text-center text-gray-600">
+            <div v-if="!model.questions.length" class="text-center text-gray-600">
               You don't have any questions created.
             </div>
-            <div v-for="(question, index) in survey.questions" :key="index">
+            <div v-for="(question, index) in model.questions" :key="index">
               <QuestionEditor
                 :questions="question"
                 :index="index"
@@ -161,9 +162,14 @@
 
 <script setup>
 import { ref } from "vue";
+import { useRoute } from "vue-router";
+import { useSurvey } from "../store/survey";
 import QuestionEditor from "./QuestionEditor.vue";
 
-const survey = ref({
+const route = useRoute();
+const survey = useSurvey();
+
+const model = ref({
   title: "",
   status: false,
   description: null,
@@ -171,6 +177,14 @@ const survey = ref({
   expired_at: null,
   questions: [],
 });
+
+if (route.params.id) {
+  model.value = survey.surveys.find((s) => s.id === parseInt(route.params.id));
+}
+
+const createQuestion = () => {};
+const editQuestion = () => {};
+const deleteQuestion = () => {};
 </script>
 
 <style scoped></style>

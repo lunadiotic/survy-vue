@@ -16,7 +16,8 @@ const routes = [
 		children: [
 			{ path: '/dashboard', name: 'Dashboard', component: Main },
 			{ path: '/survey', name: 'Survey', component: Survey },
-			{ path: '/survey/create', name: 'SurveyCreate', component: SurveyCreate }
+			{ path: '/survey/create', name: 'SurveyCreate', component: SurveyCreate },
+			{ path: '/survey/:id/edit', name: 'SurveyEdit', component: SurveyCreate }
 		],
 		async beforeEnter (to, from, next) {
 			const auth = useAuth();
