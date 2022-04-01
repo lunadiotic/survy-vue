@@ -204,7 +204,11 @@ const addQuestion = (index) => {
 
 const editQuestion = () => {};
 
-const deleteQuestion = () => {};
+const deleteQuestion = (question) => {
+  model.value.questions = model.value.questions.filter(
+    (q) => q !== question
+  )
+};
 </script>
 
 <style scoped></style>

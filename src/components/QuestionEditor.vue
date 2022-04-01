@@ -25,6 +25,7 @@
 			</button>
 
 			<button
+				@click="deleteQuestion()"
 				class="flex items-center text-xs py-1 px-3 rounded-sm text-red-500 hover:border-red-600"
 			>
 				<svg
@@ -239,7 +240,7 @@ const addQuestion = () => {
 }
 
 const deleteQuestion = () => {
-	emit("delete", props.question)
+	emit("delete", props.questions)
 }
 </script>
 
