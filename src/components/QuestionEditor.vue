@@ -179,13 +179,13 @@ const survey = useSurvey();
 const questionTypes = survey.questionTypes;
 
 const props = defineProps({
-	questions: Object,
+	question: Object,
 	index: Number,
 });
 
 const emit = defineEmits(['create', 'edit', 'delete']);
 
-const model = ref(JSON.parse(JSON.stringify(props.questions)));
+const model = ref(JSON.parse(JSON.stringify(props.question)));
 
 const upperCaseFirst = (str) => {
 	return str.charAt(0).toUpperCase() + str.slice(1);
@@ -240,7 +240,7 @@ const addQuestion = () => {
 }
 
 const deleteQuestion = () => {
-	emit("delete", props.questions)
+	emit("delete", props.question)
 }
 </script>
 

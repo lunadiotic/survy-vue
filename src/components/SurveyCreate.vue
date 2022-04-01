@@ -153,7 +153,7 @@
 						</div>
 						<div v-for="(question, index) in model.questions" :key="index">
 							<QuestionEditor
-								:questions="question"
+								:question="question"
 								:index="index"
 								@create="addQuestion"
 								@edit="editQuestion"
