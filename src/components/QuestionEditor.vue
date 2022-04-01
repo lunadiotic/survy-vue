@@ -4,6 +4,7 @@
 
 		<div class="flex items-center">
 			<button
+				@click="addQuestion()"
 				class="flex items-center text-xs py-1 px-3 mr-2 rounded-sm text-white bg-gray-600 hover:bg-gray-700"
 			>
 				<svg
@@ -232,6 +233,14 @@ const dataChange = () => {
 
   emit("edit", data);
 };
+
+const addQuestion = () => {
+	emit("create", props.index + 1)
+}
+
+const deleteQuestion = () => {
+	emit("delete", props.question)
+}
 </script>
 
 <style></style>
