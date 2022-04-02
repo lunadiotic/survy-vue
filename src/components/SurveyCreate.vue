@@ -7,7 +7,6 @@
 		</div>
 	</header>
 	<main>
-		{{ model }}
 		<div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
 			<form @submit.prevent="saveSurvey">
 				<div class="shadow sm:rounded-md sm:overflow-hidden">
@@ -18,8 +17,8 @@
 							</label>
 							<div class="mt-1 flex items-center">
 								<img
-									v-if="model.image"
-									:src="model.image"
+									v-if="model.image_url"
+									:src="model.image_url"
 									:alt="model.title"
 									class="w-64 h-48 object-cover"
 								/>
@@ -47,6 +46,7 @@
 								>
 									<input
 										type="file"
+										@change="onImageChange"
 										class="absolute left-0 top-0 right-0 bottom-0 opacity-0 cursor-pointer"
 									/>
 									Change
@@ -191,6 +191,16 @@ const model = ref({
 if (route.params.id) {
 	model.value = survey.surveys.find((s) => s.id === parseInt(route.params.id));
 }
+
+const onImageChange = (event) => {
+	const file = event.target.files[0];
+	const reader = new FileReader();
+	reader.onload = () => {
+		model.value.image = reader.result;
+		model.value.image_url = reader.result;
+	};
+	reader.readAsDataURL(file);
+};
 
 const addQuestion = (index) => {
 	const newQuestion = {

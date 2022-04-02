@@ -42,27 +42,28 @@ export const useSurvey = defineStore('survey-store', () => {
 	const questionTypes = ['text', 'select', 'radio', 'checkbox', 'textarea'];
 
 	const saveSurvey = async (survey) => {
+		delete survey.image_url;
 		let response;
 		try {
-			// if (survey.id) {
-			// 	console.log(survey);
-			// 	response = await axios
-			// 		.put(`/api/survey/${survey.id}`, survey)
-			// 		.then((result) => {
-			// 			surveys.value = surveys.value.map((s) => {
-			// 				if(s.id === result.data.data.id) {
-			// 					return result.data.data;
-			// 				}
-			// 				return s;
-			// 			})
-			// 			return result;
-			// 		});
-			// } else {
+			if (survey.id) {
+				console.log(survey);
+				response = await axios
+					.put(`/api/survey/${survey.id}`, survey)
+					.then((result) => {
+						surveys.value = surveys.value.map((s) => {
+							if(s.id === result.data.data.id) {
+								return result.data.data;
+							}
+							return s;
+						})
+						return result;
+					});
+			} else {
 				response = await axios.post(`/api/survey`, survey).then((result) => {
 					surveys.value = [...surveys.value, result.data.data];
 					return result;
 				});
-			// }
+			}
 			return response;
 		} catch (error) {
 			console.error(error.response);
