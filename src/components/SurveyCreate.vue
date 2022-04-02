@@ -199,15 +199,20 @@ const addQuestion = (index) => {
 		data: {},
 	};
 
-  model.value.questions.splice(index, 0, newQuestion);
+	model.value.questions.splice(index, 0, newQuestion);
 };
 
-const editQuestion = () => {};
+const editQuestion = (question) => {
+	model.value.questions = model.value.questions.map((q) => {
+		if (q.id === question.id) {
+			return JSON.parse(JSON.stringify(question));
+		}
+		return q;
+	});
+};
 
 const deleteQuestion = (question) => {
-  model.value.questions = model.value.questions.filter(
-    (q) => q !== question
-  )
+	model.value.questions = model.value.questions.filter((q) => q !== question);
 };
 </script>
 
