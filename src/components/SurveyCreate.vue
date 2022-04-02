@@ -2,13 +2,16 @@
 	<header class="bg-white shadow">
 		<div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
 			<div class="flex justify-between items-center">
-				<h1 class="text-3xl font-bold text-gray-900">Create Survey</h1>
+				<h1 class="text-3xl font-bold text-gray-900">
+					{{ route.params.id ? model.title : "Create Survey" }}
+				</h1>
 			</div>
 		</div>
 	</header>
 	<main>
 		<div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-			<form @submit.prevent="saveSurvey">
+			<div v-if="loading" class="flex justify-center">Loading...</div>
+			<form v-else @submit.prevent="saveSurvey">
 				<div class="shadow sm:rounded-md sm:overflow-hidden">
 					<div class="px-4 py-5 bg-white space-y-6 sm:p-6">
 						<div>
@@ -169,7 +172,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useSurvey } from '../store/survey';
 import { v4 as uuidv4 } from 'uuid';
@@ -189,6 +192,12 @@ const model = ref({
 	questions: [],
 });
 
+if (route.params.id) {
+	survey.getSurvey(route.params.id);
+}
+
+const loading = computed(() => survey.selectedSurvey.loading)
+
 watch(
 	() => survey.selectedSurvey.data,
 	(newVal, oldVal) => {
@@ -199,9 +208,6 @@ watch(
 	}
 );
 
-if (route.params.id) {
-	survey.getSurvey(route.params.id);
-}
 
 const onImageChange = (event) => {
 	const file = event.target.files[0];
