@@ -39,6 +39,11 @@ export const useSurvey = defineStore('survey-store', () => {
 		},
 	]);
 
+	const selectedSurvey = ref({
+		loading: false,
+		data: {},
+	});
+
 	const questionTypes = ['text', 'select', 'radio', 'checkbox', 'textarea'];
 
 	const saveSurvey = async (survey) => {
@@ -46,16 +51,10 @@ export const useSurvey = defineStore('survey-store', () => {
 		let response;
 		try {
 			if (survey.id) {
-				console.log(survey);
 				response = await axios
 					.put(`/api/survey/${survey.id}`, survey)
 					.then((result) => {
-						surveys.value = surveys.value.map((s) => {
-							if(s.id === result.data.data.id) {
-								return result.data.data;
-							}
-							return s;
-						})
+						selectedSurvey.value.data = result.data.data;
 						return result;
 					});
 			} else {
@@ -71,9 +70,24 @@ export const useSurvey = defineStore('survey-store', () => {
 		}
 	};
 
+	const getSurvey = async (id) => {
+		try {
+			selectedSurvey.value.loading = true;
+			const result = await axios.get(`/api/survey/${id}`);
+			selectedSurvey.value.data = await result.data.data;
+			selectedSurvey.value.loading = false;
+			return result.data.data;
+		} catch (error) {
+			console.log(error.response);
+			throw error.response;
+		}
+	};
+
 	return {
 		surveys,
+		selectedSurvey,
 		questionTypes,
 		saveSurvey,
+		getSurvey,
 	};
 });

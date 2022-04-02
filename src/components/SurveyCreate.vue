@@ -169,7 +169,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useSurvey } from '../store/survey';
 import { v4 as uuidv4 } from 'uuid';
@@ -184,12 +184,23 @@ const model = ref({
 	status: false,
 	description: null,
 	image: null,
+	image_url: null,
 	expired_at: null,
 	questions: [],
 });
 
+watch(
+	() => survey.selectedSurvey.data,
+	(newVal, oldVal) => {
+		model.value = {
+			...JSON.parse(JSON.stringify(newVal)),
+			status: newVal.status !== 'draft',
+		};
+	}
+);
+
 if (route.params.id) {
-	model.value = survey.surveys.find((s) => s.id === parseInt(route.params.id));
+	survey.getSurvey(route.params.id);
 }
 
 const onImageChange = (event) => {
