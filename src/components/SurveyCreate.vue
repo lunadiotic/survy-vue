@@ -7,6 +7,7 @@
 		</div>
 	</header>
 	<main>
+		{{ model }}
 		<div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
 			<form @submit.prevent="saveSurvey">
 				<div class="shadow sm:rounded-md sm:overflow-hidden">
@@ -169,12 +170,13 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useSurvey } from '../store/survey';
 import { v4 as uuidv4 } from 'uuid';
 import QuestionEditor from './QuestionEditor.vue';
 
 const route = useRoute();
+const router = useRouter();
 const survey = useSurvey();
 
 const model = ref({
@@ -213,6 +215,15 @@ const editQuestion = (question) => {
 
 const deleteQuestion = (question) => {
 	model.value.questions = model.value.questions.filter((q) => q !== question);
+};
+
+const saveSurvey = async () => {
+	const result = await survey.saveSurvey(model.value);
+	router.push({
+		name: 'SurveyEdit',
+		params: { id: result.data.data.id },
+	});
+	// console.log(model.value);
 };
 </script>
 
