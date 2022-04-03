@@ -1,6 +1,7 @@
 <template>
 	<header class="bg-white shadow">
 		<div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+			{{ model }}
 			<div class="flex justify-between items-center">
 				<h1 class="text-3xl font-bold text-gray-900">
 					{{ route.params.id ? model.title : 'Create Survey' }}
@@ -220,10 +221,7 @@ const loading = computed(() => survey.selectedSurvey.loading);
 watch(
 	() => survey.selectedSurvey.data,
 	(newVal, oldVal) => {
-		model.value = {
-			...JSON.parse(JSON.stringify(newVal)),
-			status: newVal.status !== 'draft',
-		};
+		model.value = JSON.parse(JSON.stringify(newVal));
 	}
 );
 
