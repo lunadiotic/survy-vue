@@ -3,41 +3,7 @@ import axios from 'axios';
 import { ref } from 'vue';
 
 export const useSurvey = defineStore('survey-store', () => {
-	const surveys = ref([
-		{
-			id: 100,
-			title: 'The survey from idstack',
-			slug: 'the-survey-from-idstack',
-			status: 'draft',
-			image:
-				'https://img.freepik.com/free-vector/futuristic-technological-wallpaper_79603-1093.jpg',
-			description:
-				'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nam eius fugiat, ducimus necessitatibus harum illum quisquam possimus velit itaque placeat tenetur modi cumque enim provident nihil in odio laboriosam quasi!',
-			expired_at: '2022-03-30 20:00:00',
-			created_at: '2022-03-30 20:00:00',
-			updated_at: '2022-03-30 20:00:00',
-			questions: [
-				{
-					id: 1,
-					type: 'select',
-					question: "what's the color of rose?",
-					description: null,
-					data: {
-						options: [
-							{
-								uuid: '123asdf-123sfal-123asd-123asd-321333',
-								text: 'blue',
-							},
-							{
-								uuid: '123asdf-123sfal-123asd-123asd-123121',
-								text: 'blue',
-							},
-						],
-					},
-				},
-			],
-		},
-	]);
+	const surveys = ref([]);
 
 	const selectedSurvey = ref({
 		loading: false,
@@ -58,15 +24,14 @@ export const useSurvey = defineStore('survey-store', () => {
 						return result;
 					});
 			} else {
-				response = await axios.post(`/api/survey`, survey).then((result) => {
-					surveys.value = [...surveys.value, result.data.data];
-					return result;
-				});
+				response = await axios.post(`/api/survey`, survey)
+				surveys.value = [...surveys.value, response.data.data];
+				return response;
 			}
 			return response;
 		} catch (error) {
-			console.error(error.response);
-			return error.response;
+			console.error(error);
+			return error;
 		}
 	};
 
@@ -78,8 +43,21 @@ export const useSurvey = defineStore('survey-store', () => {
 			selectedSurvey.value.loading = false;
 			return result.data.data;
 		} catch (error) {
-			console.log(error.response);
-			throw error.response;
+			console.log(error);
+			throw error;
+		}
+	};
+
+	const getSurveys = async () => {
+		try {
+			surveys.value.loading = true;
+			const result = await axios.get(`/api/survey`);
+			surveys.value.data = await result.data.data;
+			surveys.value.loading = false;
+			return result.data.data;
+		} catch (error) {
+			console.log(error);
+			throw error;
 		}
 	};
 
@@ -97,6 +75,7 @@ export const useSurvey = defineStore('survey-store', () => {
 		questionTypes,
 		saveSurvey,
 		getSurvey,
+		getSurveys,
 		deleteSurvey,
 	};
 });

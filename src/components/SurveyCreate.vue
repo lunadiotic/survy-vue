@@ -6,6 +6,7 @@
 					{{ route.params.id ? model.title : 'Create Survey' }}
 				</h1>
 				<button
+					v-if="route.params.id"
 					@click="deleteSurvey()"
 					class="py-2 px-3 text-white bg-red-500 rounded-md hover:bg-red-500"
 				>
@@ -267,7 +268,7 @@ const saveSurvey = async () => {
 		name: 'SurveyEdit',
 		params: { id: result.data.data.id },
 	});
-	// console.log(model.value);
+	// console.log(result);
 };
 
 const deleteSurvey = async () => {
